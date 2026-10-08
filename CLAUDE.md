@@ -2,8 +2,8 @@
 
 ## Comandos
 
-* Instalar: `pip install -e .`  (Python 3.10+)
-* Ejecutar: `python -m src.main`
+* Instalar: `pip install -r requirements.txt`  (Python 3.10+)
+* Ejecutar: `cd src && python main.py`
 * Pruebas: `pytest`
 * Linter: `ruff check src`
 
