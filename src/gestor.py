@@ -123,6 +123,13 @@ def _calcular_descuento(subtotal, cliente):
     return descuento
 
 
+def _calcular_impuesto_y_total(base):
+    """Calcula el IVA (16%) sobre la base y el total redondeado a 2 decimales."""
+    impuesto = base * 0.16
+    total = round(base + impuesto, 2)
+    return impuesto, total
+
+
 def _armar_ticket(venta):
     """Arma el ticket de la venta en texto plano."""
     lineas = [
@@ -151,9 +158,7 @@ def registrar_venta(codigo, cantidad, cliente=""):
     producto = INVENTARIO[codigo]
     subtotal = producto["precio"] * cantidad
     descuento = _calcular_descuento(subtotal, cliente)
-    base = subtotal - descuento
-    impuesto = base * 0.16
-    total = round(base + impuesto, 2)
+    impuesto, total = _calcular_impuesto_y_total(subtotal - descuento)
 
     producto["stock"] = producto["stock"] - cantidad
     contadorVentas = contadorVentas + 1
@@ -175,7 +180,11 @@ def registrar_venta(codigo, cantidad, cliente=""):
 
 
 def cotizar(codigo, cantidad):
-    """Calcula cuanto costaria una compra sin registrar la venta."""
+    """Calcula cuanto costaria una compra sin registrar la venta.
+
+    Aplica el descuento por volumen y el IVA, pero no el descuento VIP
+    ni revisa el stock.
+    """
     global ultimo_error
     if codigo not in INVENTARIO:
         ultimo_error = "producto no existe"
@@ -183,16 +192,10 @@ def cotizar(codigo, cantidad):
     if cantidad is None or cantidad <= 0:
         ultimo_error = "cantidad invalida"
         return None
-    aux = INVENTARIO[codigo]["precio"] * cantidad
-    desc = 0
-    if aux >= 1000:
-        desc = aux * 0.10
-    else:
-        if aux >= 500:
-            desc = aux * 0.05
-    base = aux - desc
-    total = base + base * 0.16
-    return round(total, 2)
+    subtotal = INVENTARIO[codigo]["precio"] * cantidad
+    descuento = _calcular_descuento_volumen(subtotal)
+    _, total = _calcular_impuesto_y_total(subtotal - descuento)
+    return total
 
 
 def calcular_descuento_viejo(monto):
