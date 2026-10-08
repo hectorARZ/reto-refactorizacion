@@ -7,6 +7,22 @@ lo fueron parchando varias personas, asi que hay de todo un poco.
 from datetime import datetime
 
 # ---------------------------------------------------------------
+# Reglas del negocio
+# ---------------------------------------------------------------
+TASA_IVA = 0.16
+
+# Descuento por volumen: se aplica sobre el subtotal de la compra
+MONTO_DESCUENTO_ALTO = 1000
+TASA_DESCUENTO_ALTO = 0.10
+MONTO_DESCUENTO_MEDIO = 500
+TASA_DESCUENTO_MEDIO = 0.05
+
+# Descuento extra para clientes VIP (codigo de cliente con este prefijo)
+PREFIJO_VIP = "VIP"
+MONTO_MINIMO_VIP = 200
+TASA_DESCUENTO_VIP = 0.02
+
+# ---------------------------------------------------------------
 # Estado global de la aplicacion (inventario, ventas y contadores)
 # ---------------------------------------------------------------
 INVENTARIO = {}
@@ -101,31 +117,32 @@ def _validar_venta(codigo, cantidad):
 
 
 def _calcular_descuento_volumen(subtotal):
-    """Descuento por volumen de compra: 10% desde $1000, 5% desde $500."""
-    if subtotal >= 1000:
-        return subtotal * 0.10
-    if subtotal >= 500:
-        return subtotal * 0.05
+    """Descuento por volumen de compra (alto o medio segun el subtotal)."""
+    if subtotal >= MONTO_DESCUENTO_ALTO:
+        return subtotal * TASA_DESCUENTO_ALTO
+    if subtotal >= MONTO_DESCUENTO_MEDIO:
+        return subtotal * TASA_DESCUENTO_MEDIO
     return 0
 
 
 def _es_cliente_vip(cliente):
-    """Los clientes cuyo codigo empieza con VIP tienen un descuento extra."""
-    return bool(cliente) and cliente.startswith("VIP")
+    """Los clientes cuyo codigo empieza con PREFIJO_VIP tienen un descuento extra."""
+    return bool(cliente) and cliente.startswith(PREFIJO_VIP)
 
 
 def _calcular_descuento(subtotal, cliente):
-    """Descuento total: por volumen, mas 2% del subtotal para clientes VIP
-    cuya compra (ya con el descuento por volumen) pase de $200."""
+    """Descuento total: por volumen, mas TASA_DESCUENTO_VIP del subtotal para
+    clientes VIP cuya compra (ya con el descuento por volumen) pase de
+    MONTO_MINIMO_VIP."""
     descuento = _calcular_descuento_volumen(subtotal)
-    if _es_cliente_vip(cliente) and subtotal - descuento > 200:
-        descuento = descuento + subtotal * 0.02
+    if _es_cliente_vip(cliente) and subtotal - descuento > MONTO_MINIMO_VIP:
+        descuento = descuento + subtotal * TASA_DESCUENTO_VIP
     return descuento
 
 
 def _calcular_impuesto_y_total(base):
-    """Calcula el IVA (16%) sobre la base y el total redondeado a 2 decimales."""
-    impuesto = base * 0.16
+    """Calcula el IVA sobre la base y el total redondeado a 2 decimales."""
+    impuesto = base * TASA_IVA
     total = round(base + impuesto, 2)
     return impuesto, total
 
