@@ -1,7 +1,7 @@
 # Bitácora de refactorización
 
-**Nombre:**
-**Matrícula:**
+**Nombre:** Hector Ever Alonso Ramirez
+**Matrícula:** hector.alonso@msnieto.com
 **Fecha:** 2026-10-08
 
 Registra aquí **cada refactorización** que realices con Claude Code. Copia el
