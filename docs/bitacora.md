@@ -38,10 +38,6 @@ Prompts previos a las refactorizaciones, usados para entender el código y const
 
 > Agrega más filas si realizas más de 5 refactorizaciones.
 
-## Reflexión final (10-15 líneas)
+## Reflexión final
 
-Responde: ¿Qué tan útil fue Claude Code para detectar y corregir los problemas?
-¿Qué propuso la IA que tú no habías notado? ¿En qué casos tuviste que corregir
-o rechazar sus sugerencias? ¿Qué aprendiste sobre refactorizar con apoyo de IA?
-
-*(Escribe aquí tu reflexión)*
+La reflexión sobre el trabajo con Claude Code está en [`reflexion.md`](reflexion.md).
