@@ -10,9 +10,9 @@ ARCHIVO = "datos_ejemplo.json"
 def pedir_numero(mensaje):
     # pide un numero al usuario hasta que escriba algo valido
     while True:
-        temp2 = input(mensaje)
+        respuesta = input(mensaje)
         try:
-            return float(temp2)
+            return float(respuesta)
         except ValueError:
             print("Eso no es un numero, intenta de nuevo.")
 
@@ -38,7 +38,7 @@ def _imprimir_error():
 def _cargar_datos_iniciales():
     """Da la bienvenida y carga los datos guardados, si existen."""
     print("Bienvenido al gestor de la tienda La Esquina")
-    if almacen.hayArchivo(ARCHIVO):
+    if almacen.hay_archivo(ARCHIVO):
         almacen.cargar_datos(ARCHIVO)
         print("Datos cargados de", ARCHIVO)
 

@@ -18,7 +18,11 @@ def _tiene_stock_bajo(producto):
 
 def productos_stock_bajo():
     """Regresa la lista de productos con stock por debajo del minimo."""
-    return [p for p in gestor.INVENTARIO.values() if _tiene_stock_bajo(p)]
+    return [
+        producto
+        for producto in gestor.INVENTARIO.values()
+        if _tiene_stock_bajo(producto)
+    ]
 
 
 def _linea_inventario(producto):
