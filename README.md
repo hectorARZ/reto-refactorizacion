@@ -18,12 +18,18 @@ Code como asistente.
 
 ```
 .
+├── CLAUDE.md            # Instrucciones del proyecto para Claude Code
+├── .claudeignore        # Archivos que Claude Code no debe leer
+├── PLAN.md              # Plan de refactorización priorizado por impacto
 ├── src/
 │   ├── gestor.py        # Lógica de productos y ventas
 │   ├── almacen.py       # Carga y guardado de datos (JSON)
 │   ├── reportes.py      # Reportes e indicadores
 │   └── main.py          # Menú interactivo de consola
 ├── tests/               # Suite de pruebas (pytest) — NO la modifiques
+├── docs/
+│   ├── bitacora.md      # Registro de cada refactorización (prompts y resultados)
+│   └── reflexion.md     # Aprendizajes y conclusiones
 ├── datos_ejemplo.json   # Datos de ejemplo para el menú interactivo
 ├── requirements.txt
 ├── pyproject.toml       # Configuración del linter (ruff) — NO la modifiques
@@ -32,9 +38,14 @@ Code como asistente.
 
 ## Instalación y ejecución
 
-Requiere Python 3.10 o superior.
+Requisitos previos: Python 3.10 o superior y Git. Las dependencias
+(`pytest>=8.0` y `ruff>=0.6`) se instalan desde `requirements.txt`.
 
 ```bash
+# 0. Clonar el repositorio
+git clone https://github.com/hectorARZ/reto-refactorizacion.git
+cd reto-refactorizacion
+
 # 1. Crear y activar un entorno virtual
 python -m venv .venv
 source .venv/bin/activate        # En Windows: .venv\Scripts\activate
@@ -45,10 +56,13 @@ pip install -r requirements.txt
 # 3. Ejecutar la suite de pruebas (deben pasar TODAS)
 pytest
 
-# 4. Ejecutar el linter (al inicio reporta ~20 problemas; al final: 0)
+# 4. Ejecutar el linter (el código original reportaba 20 problemas;
+#    después de la refactorización: "All checks passed!")
 ruff check src
 
 # 5. (Opcional) Probar la aplicación interactiva
+#    Ejecutar siempre desde src/: el archivo de datos se busca en el
+#    directorio actual y al salir (opción 8) se sobrescribe.
 cd src && python main.py
 ```
 
